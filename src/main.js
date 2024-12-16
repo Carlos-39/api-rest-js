@@ -68,6 +68,3 @@ async function getCategoriesMoviesPreview(){
 		categoryPreviewMoviesContainer.appendChild(categoryContainer)
 	})
 }
-
-getTrendingMoviesPreview()
-getCategoriesMoviesPreview()
