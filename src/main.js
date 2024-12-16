@@ -1,9 +1,19 @@
+// crear instancia de axios para crear una config por defecto para poder trabajar en las consultas más fácil
+const api = axios.create({
+	baseURL: 'https://api.themoviedb.org/3/', // URL base para todas las peticiones
+	headers: {
+		'Content-Type': 'application/json;charset=utf8' // Encabezado para JSON
+	},
+	params: {
+		'api_key': API_KEY, // Clave de acceso requerida por la API
+		// 'language': 'es-419'
+	}
+})
+
 // conseguir peliculas en tendencia de la API para el home
 async function getTrendingMoviesPreview(){
 	// llamar a la API en la parte de peliculas en tendencia diaria
-	const res = await fetch('https://api.themoviedb.org/3/trending/movie/day?api_key=' + API_KEY)
-
-	const data = await res.json()
+	const { data } = await api('trending/movie/day')
 
 	const movies = data.results
 
@@ -30,9 +40,11 @@ async function getTrendingMoviesPreview(){
 // conseguir categorías de las películas de la API para el home
 async function getCategoriesMoviesPreview(){
 	// llamar a la API en la parte de genero de películas
-	const res = await fetch('https://api.themoviedb.org/3/genre/movie/list?api_key=' + API_KEY + '&language=es')
-
-	const data = await res.json()
+	const { data } = await api('genre/movie/list', {
+		params: {
+			'language': 'es-419' // Idioma configurado solo para esta consulta
+		}
+	})
 
 	const categories = data.genres
 
