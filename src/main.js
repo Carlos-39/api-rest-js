@@ -21,7 +21,7 @@ async function getTrendingMoviesPreview(){
 
 	// crear el espacio en el DOM por cada pelicula que haya
 	movies.forEach(movie => {
-		const trendingPreviewMoviesContainer = document.querySelector('#trendingPreview .trendingPreview-movieList')
+		const trendingMoviesPreviewList = document.querySelector('#trendingPreview .trendingPreview-movieList')
 
 		const movieContainer = document.createElement('div')
 		movieContainer.classList.add('movie-container')
@@ -33,7 +33,7 @@ async function getTrendingMoviesPreview(){
 
 		// renderizar en el DOM
 		movieContainer.appendChild(movieIMG)
-		trendingPreviewMoviesContainer.appendChild(movieContainer)
+		trendingMoviesPreviewList.appendChild(movieContainer)
 	})
 }
 
@@ -52,7 +52,7 @@ async function getCategoriesMoviesPreview(){
 
 	// crear el espacio en el DOM por cada genero que haya
 	categories.forEach(category => {
-		const categoryPreviewMoviesContainer = document.querySelector('#categoriesPreview .categoriesPreview-list')
+		const categoriesPreviewList = document.querySelector('#categoriesPreview .categoriesPreview-list')
 
 		const categoryContainer = document.createElement('div')
 		categoryContainer.classList.add('category-container')
@@ -65,6 +65,6 @@ async function getCategoriesMoviesPreview(){
 		// renderizar en el DOM
 		categoryTitle.appendChild(categoryTitleText)
 		categoryContainer.appendChild(categoryTitle)
-		categoryPreviewMoviesContainer.appendChild(categoryContainer)
+		categoriesPreviewList.appendChild(categoryContainer)
 	})
 }
