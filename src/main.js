@@ -17,12 +17,13 @@ async function getTrendingMoviesPreview(){
 
 	const movies = data.results
 
-	console.log({data, movies})
+	// console.log({data, movies})
+
+	// se borra todo lo que haya en este contenedor para despues volverlo a renderizar en el forEach
+	trendingMoviesPreviewList.innerHTML = ""
 
 	// crear el espacio en el DOM por cada pelicula que haya
 	movies.forEach(movie => {
-		const trendingMoviesPreviewList = document.querySelector('#trendingPreview .trendingPreview-movieList')
-
 		const movieContainer = document.createElement('div')
 		movieContainer.classList.add('movie-container')
 
@@ -48,12 +49,13 @@ async function getCategoriesMoviesPreview(){
 
 	const categories = data.genres
 
-	console.log({data, categories})
+	// console.log({data, categories})
+
+	// se borra todo lo que haya en este contenedor para despues volverlo a renderizar en el forEach
+	categoriesPreviewList.innerHTML = ""
 
 	// crear el espacio en el DOM por cada genero que haya
 	categories.forEach(category => {
-		const categoriesPreviewList = document.querySelector('#categoriesPreview .categoriesPreview-list')
-
 		const categoryContainer = document.createElement('div')
 		categoryContainer.classList.add('category-container')
 
