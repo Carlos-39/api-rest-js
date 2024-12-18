@@ -77,6 +77,16 @@ function categoryPage() {
 	categoriesPreviewSection.classList.add('inactive')
 	genericSection.classList.remove('inactive')
 	movieDetailSection.classList.add('inactive')
+
+	// conseguir el id de la categoría
+	const idMovie = location.hash.split('=')[1].split('-')[0]
+
+	// conseguir el nombre de la categoría e insertarlo
+	const categoryName = location.hash.split('=')[1].split('-')[1]
+	headerCategoryTitle.innerHTML = categoryName
+
+	// mostrar las películas por la categoría seleccionada
+	getMoviesByCategory(idMovie)
 }
 
 function movieDetailsPage() {
