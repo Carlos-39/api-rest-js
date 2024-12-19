@@ -10,17 +10,12 @@ const api = axios.create({
 	}
 })
 
-// conseguir peliculas diarias en tendencia de la API para el home
-async function getTrendingMoviesPreview(){
-	// llamar a la API en la parte de peliculas en tendencia diaria
-	const { data } = await api('trending/movie/day')
+// Utils -> para no hacer DRY
 
-	const movies = data.results
-
-	// console.log({data, movies})
-
+// función que renderiza las películas dependiendo el llamado a la API que haya
+function createMovies(movies, container) {
 	// se borra todo lo que haya en este contenedor para despues volverlo a renderizar en el forEach
-	trendingMoviesPreviewList.innerHTML = ""
+	container.innerHTML = ''
 
 	// crear el espacio en el DOM por cada pelicula que haya
 	movies.forEach(movie => {
@@ -34,25 +29,14 @@ async function getTrendingMoviesPreview(){
 
 		// renderizar en el DOM
 		movieContainer.appendChild(movieIMG)
-		trendingMoviesPreviewList.appendChild(movieContainer)
+		container.appendChild(movieContainer)
 	})
 }
 
-// conseguir categorías de las películas de la API para el home
-async function getCategoriesMoviesPreview(){
-	// llamar a la API en la parte de genero de películas
-	const { data } = await api('genre/movie/list', {
-		params: {
-			// 'language': 'es-419' // Idioma configurado solo para esta consulta
-		}
-	})
-
-	const categories = data.genres
-
-	// console.log({data, categories})
-
+// función que renderiza las categorías de películas dependiendo el llamado a la API que haya
+function createCategories(categories, container) {
 	// se borra todo lo que haya en este contenedor para despues volverlo a renderizar en el forEach
-	categoriesPreviewList.innerHTML = ""
+	container.innerHTML = ''
 
 	// crear el espacio en el DOM por cada genero que haya
 	categories.forEach(category => {
@@ -73,8 +57,40 @@ async function getCategoriesMoviesPreview(){
 		// renderizar en el DOM
 		categoryTitle.appendChild(categoryTitleText)
 		categoryContainer.appendChild(categoryTitle)
-		categoriesPreviewList.appendChild(categoryContainer)
+		container.appendChild(categoryContainer)
 	})
+}
+
+// llamados a la API
+
+// conseguir peliculas diarias en tendencia de la API para el home
+async function getTrendingMoviesPreview(){
+	// llamar a la API en la parte de peliculas en tendencia diaria
+	const { data } = await api('trending/movie/day')
+
+	const movies = data.results
+
+	// console.log({data, movies})
+
+	// se llama la función que pone las películas en el DOM, en este caso es para las tendencias
+	createMovies(movies, trendingMoviesPreviewList)
+}
+
+// conseguir categorías de las películas de la API para el home
+async function getCategoriesMoviesPreview(){
+	// llamar a la API en la parte de genero de películas
+	const { data } = await api('genre/movie/list', {
+		params: {
+			// 'language': 'es-419' // Idioma configurado solo para esta consulta
+		}
+	})
+
+	const categories = data.genres
+
+	// console.log({data, categories})
+
+	// se llama la función que pone las categorías en el DOM, en este caso es para la lista de categorías en el home
+	createCategories(categories, categoriesPreviewList)
 }
 
 // conseguir películas de la API dependiendo de la categoría para la vista categorías
@@ -91,21 +107,6 @@ async function getMoviesByCategory(id){
 
 	// console.log({data, movies})
 
-	// se borra todo lo que haya en este contenedor para despues volverlo a renderizar en el forEach
-	genericSection.innerHTML = ""
-
-	// crear el espacio en el DOM por cada pelicula que haya
-	movies.forEach(movie => {
-		const movieContainer = document.createElement('div')
-		movieContainer.classList.add('movie-container')
-
-		const movieIMG = document.createElement('img')
-		movieIMG.classList.add('movie-img')
-		movieIMG.setAttribute('alt', movie.title)
-		movieIMG.setAttribute('src', 'https://image.tmdb.org/t/p/w300' + movie.poster_path)
-
-		// renderizar en el DOM
-		movieContainer.appendChild(movieIMG)
-		genericSection.appendChild(movieContainer)
-	})
+	// se llama la función que pone las películas en el DOM, en este caso es para las películas por categoría
+	createMovies(movies, genericSection)
 }

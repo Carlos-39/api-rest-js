@@ -36,6 +36,9 @@ function navigator() {
 	} else {
 		homePage()
 	}
+
+	// se llama el scrollTop para que siempre la vista empiece desde arriba
+	document.documentElement.scrollTop = 0
 }
 
 // function por cada uno de los hash que se pueden tener
