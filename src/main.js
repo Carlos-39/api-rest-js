@@ -96,7 +96,7 @@ async function getCategoriesMoviesPreview(){
 // conseguir películas de la API dependiendo de la categoría para la vista categorías
 async function getMoviesByCategory(id){
 	// llamar a la API en la parte de películas por genero para la sección de categorías
-	const { data } = await api('/discover/movie', {
+	const { data } = await api('discover/movie', {
 		params: {
 			// enviar query params para filtrar por genero
 			with_genres: id
@@ -109,4 +109,35 @@ async function getMoviesByCategory(id){
 
 	// se llama la función que pone las películas en el DOM, en este caso es para las películas por categoría
 	createMovies(movies, genericSection)
+}
+
+// conseguir peliculas de la API dependiendo de lo que se puso en el buscador en la vista search
+async function getMoviesBySearch(query){
+	// llamar a la API en la parte de buscador de películas para la sección de search
+	const { data } = await api('search/movie', {
+		params: {
+			// enviar query params para filtrar por lo del buscador
+			query,
+		}
+	})
+
+	const movies = data.results
+
+	// console.log({data, movies})
+
+	// se llama la función que pone las películas en el DOM, en este caso es para las películas en la vista de buscador
+	createMovies(movies, genericSection)
+}
+
+// conseguir peliculas diarias en tendencia de la API para la vista de tendencias
+async function getTrendingMovies(){
+	// llamar a la API en la parte de peliculas en tendencia diaria
+	const { data } = await api('trending/movie/day')
+
+	const movies = data.results
+
+	// console.log({data, movies})
+
+	// se llama la función que pone las películas en el DOM, en este caso es para las tendencias
+	createMovies(movies, genericSection);
 }

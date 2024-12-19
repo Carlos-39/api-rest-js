@@ -2,7 +2,8 @@
 
 // cambiar de vista cuando se hace click en la lupa de buscar
 searchFormBtn.addEventListener('click', () => {
-	location.hash = '#search='
+	// agarrar el valor del input que introduce el usuario y que se ponga en el hash
+	location.hash = `#search=${searchFormInput.value}`
 })
 
 // cambiar de vista cuando se hace click en ver mas (del home) para ir a tendencias
@@ -10,9 +11,13 @@ trendingBtn.addEventListener('click', () => {
 	location.hash = '#trends'
 })
 
-// cambiar de vista cuando se hace click en la flechita para ir al home
+// cambiar de vista cuando se hace click en la flechita para ir a lo anterior buscado
 arrowBtn.addEventListener('click', () => {
-	location.hash = '#home'
+	if (window.history.length <= 2) {
+		location.hash = '#home'
+	} else {
+		location.hash = window.history.back()
+	}
 })
 
 // llamar a navigator cuando cargue la pagina
@@ -85,7 +90,11 @@ function categoryPage() {
 	const idMovie = location.hash.split('=')[1].split('-')[0]
 
 	// conseguir el nombre de la categoría e insertarlo
-	const categoryName = location.hash.split('=')[1].split('-')[1]
+	let categoryName = location.hash.split('=')[1].split('-')[1]
+
+	// reemplazar los espacios para que funcione bien
+	categoryName = categoryName.replaceAll('%20', ' ')
+
 	headerCategoryTitle.innerHTML = categoryName
 
 	// mostrar las películas por la categoría seleccionada
@@ -119,13 +128,23 @@ function searchPage() {
 	arrowBtn.classList.remove('inactive')
 	arrowBtn.classList.remove('header-arrow--white')
 	headerTitle.classList.add('inactive')
-	headerCategoryTitle.classList.remove('inactive')
+	headerCategoryTitle.classList.add('inactive')
 	searchForm.classList.remove('inactive')
 
 	trendingPreviewSection.classList.add('inactive')
 	categoriesPreviewSection.classList.add('inactive')
 	genericSection.classList.remove('inactive')
 	movieDetailSection.classList.add('inactive')
+
+	// conseguir lo que el user introduce en el buscador
+	let query = location.hash.split('=')[1]
+
+	// reemplazar los espacios para que funcione bien
+	query = query.replaceAll('%20', ' ')
+	console.log(`Buscando la película: ${query}`)
+
+	// mostrar las películas dependiendo de lo que se puso en el buscador
+	getMoviesBySearch(query)
 }
 
 function trendsPage() {
@@ -144,4 +163,10 @@ function trendsPage() {
 	categoriesPreviewSection.classList.add('inactive')
 	genericSection.classList.remove('inactive')
 	movieDetailSection.classList.add('inactive')
+
+	// agregar titulo de tendencias para la vista tendencias
+	headerCategoryTitle.innerHTML = 'Tendencias'
+
+	// llamar a que se muestre las tendencias diarias de forma completa para la vista tendencias
+	getTrendingMovies()
 }
