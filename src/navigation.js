@@ -117,6 +117,12 @@ function movieDetailsPage() {
 	categoriesPreviewSection.classList.add('inactive')
 	genericSection.classList.add('inactive')
 	movieDetailSection.classList.remove('inactive')
+
+	// traer el id de la película
+	const idMovie = location.hash.split('=')[1]
+
+	// llamado a la función que trae los detalles de la película
+	getMovieById(idMovie)
 }
 
 function searchPage() {

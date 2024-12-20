@@ -22,6 +22,11 @@ function createMovies(movies, container) {
 		const movieContainer = document.createElement('div')
 		movieContainer.classList.add('movie-container')
 
+		// evento para que cuando se le de click a la pelicula vaya a los detalles de esta
+		movieContainer.addEventListener('click', () => {
+			location.hash = `#movie=${movie.id}`
+		})
+
 		const movieIMG = document.createElement('img')
 		movieIMG.classList.add('movie-img')
 		movieIMG.setAttribute('alt', movie.title)
@@ -140,4 +145,38 @@ async function getTrendingMovies(){
 
 	// se llama la función que pone las películas en el DOM, en este caso es para las tendencias
 	createMovies(movies, genericSection);
+}
+
+// conseguir los detalles de la pelicula seleccionada del home para la vista detailsPage
+async function getMovieById(id){
+	// llamar a la API en la parte de detalles de la película seleccionada
+	const { data: movie } = await api(`movie/${id}`)
+
+	// Poner la imagen de fondo de la película
+	const movieImgUrl = 'https://image.tmdb.org/t/p/w500' + movie.poster_path
+	headerSection.style.background = `linear-gradient(180deg, rgba(0, 0, 0, 0.35) 19.27%, rgba(0, 0, 0, 0) 29.17%), url(${movieImgUrl})`
+
+	// poner en el DOM los detalles de la película
+	movieDetailTitle.textContent = movie.title
+	movieDetailDescription.textContent = movie.overview
+	movieDetailScore.textContent = movie.vote_average
+
+	// poner la categoría a la que pertenece la película
+	createCategories(movie.genres, movieDetailCategoriesList)
+
+	// poner las peliculas recomendadas
+	getRelatedMoviesId(id)
+}
+
+// conseguir las películas relacionadas para la vista de detalles de película
+async function getRelatedMoviesId(id) {
+	// llamar a la API en la parte de películas relacionadas
+	const { data } = await api(`movie/${id}/similar`)
+
+	const relatedMovies = data.results
+
+	// renderizar las peliculas relacionadas
+	createMovies(relatedMovies, relatedMoviesContainer)
+
+	relatedMoviesContainer.scrollTo(0, 0);
 }
