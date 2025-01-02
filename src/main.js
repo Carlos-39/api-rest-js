@@ -14,7 +14,7 @@ const api = axios.create({
 
 // función que renderiza las películas dependiendo el llamado a la API que haya
 function createMovies(movies, container) {
-	// se borra todo lo que haya en este contenedor para despues volverlo a renderizar en el forEach
+	// se borra todo lo que haya en este contenedor para después volverlo a renderizar en el forEach
 	container.innerHTML = ''
 
 	// crear el espacio en el DOM por cada pelicula que haya
@@ -31,6 +31,7 @@ function createMovies(movies, container) {
 		movieIMG.classList.add('movie-img')
 		movieIMG.setAttribute('alt', movie.title)
 		movieIMG.setAttribute('src', 'https://image.tmdb.org/t/p/w300' + movie.poster_path)
+		movieIMG.setAttribute('loading', 'lazy') // implementación de lazy loading a las imágenes
 
 		// renderizar en el DOM
 		movieContainer.appendChild(movieIMG)
