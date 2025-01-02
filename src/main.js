@@ -33,6 +33,12 @@ function createMovies(movies, container) {
 		movieIMG.setAttribute('src', 'https://image.tmdb.org/t/p/w300' + movie.poster_path)
 		movieIMG.setAttribute('loading', 'lazy') // implementación de lazy loading a las imágenes
 
+		// implementar imagen por defecto en caso de que no cargue de la API
+		movieIMG.addEventListener('error', () => {
+			// agregarle imagen por defecto al src de la imagen
+			movieIMG.setAttribute('src', '../images/image404.jpg')
+		})
+
 		// renderizar en el DOM
 		movieContainer.appendChild(movieIMG)
 		container.appendChild(movieContainer)
