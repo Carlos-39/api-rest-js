@@ -145,38 +145,38 @@ async function getMoviesBySearch(query){
 
 // conseguir peliculas diarias en tendencia de la API para la vista de tendencias
 
-	// 1era forma, con pagination
-	async function getTrendingMovies(page = 1) {
-		// llamar a la API en la parte de peliculas en tendencia diaria
-		const { data } = await api('trending/movie/day', {
-			// se pone la pagina para que cuando se cargue más, carguen mas películas
-			params: {
-				page
-			}
-		})
+// 1era forma, con pagination
+async function getTrendingMovies(page = 1) {
+	// llamar a la API en la parte de peliculas en tendencia diaria
+	const { data } = await api('trending/movie/day', {
+		// se pone la pagina para que cuando se cargue más, carguen mas películas
+		params: {
+			page
+		}
+	})
 
-		const movies = data.results
+	const movies = data.results
 
-		// console.log({data, movies})
+	// console.log({data, movies})
 
-		// se llama la función que pone las películas en el DOM, en este caso es para las tendencias, se pone la paginación
-		createMovies(movies, genericSection, { clean: page == 1 });
+	// se llama la función que pone las películas en el DOM, en este caso es para las tendencias, se pone la paginación
+	createMovies(movies, genericSection, { clean: page == 1 });
 
-		// botón para cargar más películas
-		const btnLoadMore = document.createElement('button');
-		btnLoadMore.innerText = 'Cargar más'
+	// botón para cargar más películas
+	const btnLoadMore = document.createElement('button');
+	btnLoadMore.innerText = 'Cargar más'
 		
-		// acción a a ejecutar cuando se le da click, en este caso la función de cargas más películas
-		btnLoadMore.addEventListener('click', () => {
-			// se quita el botón de cargar mas
-			btnLoadMore.style.display = 'none';
+	// acción a a ejecutar cuando se le da click, en este caso la función de cargas más películas
+	btnLoadMore.addEventListener('click', () => {
+		// se quita el botón de cargar mas
+		btnLoadMore.style.display = 'none';
 
-			// se vuelve a llamar a la función para conseguir mas películas pero en otra pagina
-			getTrendingMovies(page + 1)
-		})
+		// se vuelve a llamar a la función para conseguir mas películas pero en otra pagina
+		getTrendingMovies(page + 1)
+	})
 
-		genericSection.appendChild(btnLoadMore);
-	}
+	genericSection.appendChild(btnLoadMore);
+}
 
 	// 2da forma con scroll infinito
 
