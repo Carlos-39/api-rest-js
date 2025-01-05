@@ -144,37 +144,71 @@ async function getMoviesBySearch(query){
 }
 
 // conseguir peliculas diarias en tendencia de la API para la vista de tendencias
-async function getTrendingMovies(page = 1) {
-	// llamar a la API en la parte de peliculas en tendencia diaria
-	const { data } = await api('trending/movie/day', {
-		// se pone la pagina para que cuando se cargue más, carguen mas películas
-		params: {
-			page
-		}
-	})
 
-	const movies = data.results
+	// 1era forma, con pagination
+	async function getTrendingMovies(page = 1) {
+		// llamar a la API en la parte de peliculas en tendencia diaria
+		const { data } = await api('trending/movie/day', {
+			// se pone la pagina para que cuando se cargue más, carguen mas películas
+			params: {
+				page
+			}
+		})
 
-	// console.log({data, movies})
+		const movies = data.results
 
-	// se llama la función que pone las películas en el DOM, en este caso es para las tendencias, se pone la paginación
-	createMovies(movies, genericSection, { clean: page == 1 });
+		// console.log({data, movies})
 
-	// botón para cargar más películas
-	const btnLoadMore = document.createElement('button');
-	btnLoadMore.innerText = 'Cargar más'
-	
-	// acción a a ejecutar cuando se le da click, en este caso la función de cargas más películas
-	btnLoadMore.addEventListener('click', () => {
-		// se quita el botón de cargar mas
-		btnLoadMore.style.display = 'none';
+		// se llama la función que pone las películas en el DOM, en este caso es para las tendencias, se pone la paginación
+		createMovies(movies, genericSection, { clean: page == 1 });
 
-		// se vuelve a llamar a la función para conseguir mas películas pero en otra pagina
-		getTrendingMovies(page + 1)
-	})
+		// botón para cargar más películas
+		const btnLoadMore = document.createElement('button');
+		btnLoadMore.innerText = 'Cargar más'
+		
+		// acción a a ejecutar cuando se le da click, en este caso la función de cargas más películas
+		btnLoadMore.addEventListener('click', () => {
+			// se quita el botón de cargar mas
+			btnLoadMore.style.display = 'none';
 
-	genericSection.appendChild(btnLoadMore);
-}
+			// se vuelve a llamar a la función para conseguir mas películas pero en otra pagina
+			getTrendingMovies(page + 1)
+		})
+
+		genericSection.appendChild(btnLoadMore);
+	}
+
+	// 2da forma con scroll infinito
+
+	// // Estado global
+	// let currentPage = 1;
+	// let isFetching = false;
+
+	// async function getTrendingMovies() {
+	// 	// traer del document de la pagina, todo lo relacionado con el scroll
+	// 	const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
+
+	// 	// Verificar si el usuario está cerca del final de la página y evitar llamadas repetidas
+	//     if (isFetching || (scrollTop + clientHeight) < (scrollHeight - 15)) return;
+
+	//     isFetching = true; // Bloquear nuevas solicitudes hasta que termine esta
+
+	// 	// llamar a la API en la parte de peliculas en tendencia diaria
+	// 	const { data } = await api('trending/movie/day', {
+	// 		// se pone la pagina para que cuando se cargue más, carguen mas películas
+	// 		params: {
+	// 			page: currentPage
+	// 		}
+	// 	})
+
+	// 	const movies = data.results
+
+	// 	// se llama la función que pone las películas en el DOM, en este caso es para las tendencias, se pone la paginación
+	// 	createMovies(movies, genericSection, { clean: currentPage  == 1 });	
+
+	// 	currentPage++; // Incrementar el número de página
+	//     isFetching = false; // Desbloquear solicitudes
+	// }
 
 // conseguir los detalles de la pelicula seleccionada del home para la vista detailsPage
 async function getMovieById(id){

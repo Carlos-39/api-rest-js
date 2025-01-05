@@ -24,6 +24,8 @@ arrowBtn.addEventListener('click', () => {
 window.addEventListener('DOMContentLoaded', navigator)
 // llamar a navigator cuando cambie el hash
 window.addEventListener('hashchange', navigator, false)
+// llamar a la función de cargas mas pelis cuando haga scroll
+	// window.addEventListener('scroll', getTrendingMovies)
 
 // esta función se llamara cuando cargue la aplicación y cuando cambie el has de la página
 function navigator() {
