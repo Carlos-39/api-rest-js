@@ -10,6 +10,41 @@ const api = axios.create({
 	}
 })
 
+// lista de películas guardadas, para coger el id
+function likedMoviesList() {
+	// guardar las películas en lista de likes en forma de JSON
+	const item = JSON.parse(localStorage.getItem('liked_movies'))
+
+	// si hay algo en item, devuelva eso sino un objeto vació
+	let movies
+
+	if(item) {
+		movies = item
+	} else {
+		movies = {}
+	}
+
+	return movies
+}
+
+// guardar lo necesario para los datos de las películas para el localStorage
+function likeMovie(movie) {
+	// llamar las películas con like
+	const likedMovies = likedMoviesList()
+
+	// saber si la movie esta en localStorage
+	if(likedMovies[movie.id]) {
+		// si ya esta, se elimina del localStorage
+		likedMovies[movie.id] = undefined
+	} else {
+		// si no esta, se agrega al localStorage
+		likedMovies[movie.id] = movie
+	}
+
+	// guardar otra vez las películas en el localStorage con la info guardada en forma de cadena
+	localStorage.setItem('liked_movies', JSON.stringify(likedMovies))
+}
+
 // Utils -> para no hacer DRY
 
 // función que renderiza las películas dependiendo el llamado a la API que haya
@@ -42,6 +77,9 @@ function createMovies(movies, container, { clean = true } = {}) {
 		movieBtn.addEventListener('click', () => {
 			// cambiar estilos del botón
 			movieBtn.classList.toggle('movieBtn--liked')
+
+			// agregar la película en el local storage
+			likeMovie(movie)
 		})
 
 		// implementar imagen por defecto en caso de que no cargue de la API
