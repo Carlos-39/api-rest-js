@@ -24,16 +24,25 @@ function createMovies(movies, container, { clean = true } = {}) {
 		const movieContainer = document.createElement('div')
 		movieContainer.classList.add('movie-container')
 
-		// evento para que cuando se le de click a la pelicula vaya a los detalles de esta
-		movieContainer.addEventListener('click', () => {
-			location.hash = `#movie=${movie.id}`
-		})
-
 		const movieIMG = document.createElement('img')
 		movieIMG.classList.add('movie-img')
 		movieIMG.setAttribute('alt', movie.title)
 		movieIMG.setAttribute('src', 'https://image.tmdb.org/t/p/w300' + movie.poster_path)
 		movieIMG.setAttribute('loading', 'lazy') // implementación de lazy loading a las imágenes
+
+		// evento para que cuando se le de click a la pelicula vaya a los detalles de esta
+		movieIMG.addEventListener('click', () => {
+			location.hash = `#movie=${movie.id}`
+		})
+
+		// botón de like en la foto
+		const movieBtn = document.createElement('button')
+		movieBtn.classList.add('movieBtn')
+
+		movieBtn.addEventListener('click', () => {
+			// cambiar estilos del botón
+			movieBtn.classList.toggle('movieBtn--liked')
+		})
 
 		// implementar imagen por defecto en caso de que no cargue de la API
 		movieIMG.addEventListener('error', () => {
@@ -43,6 +52,7 @@ function createMovies(movies, container, { clean = true } = {}) {
 
 		// renderizar en el DOM
 		movieContainer.appendChild(movieIMG)
+		movieContainer.appendChild(movieBtn)
 		container.appendChild(movieContainer)
 	})
 }
